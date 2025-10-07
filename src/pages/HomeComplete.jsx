@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent } from '@/components/ui/card.jsx'
 import { Input } from '@/components/ui/input.jsx'
@@ -11,6 +11,7 @@ import SEO from '../components/SEO'
 
 // Import assets
 import headshot from '../assets/hero-headshot-final.png'
+import headshotWebP from '../assets/hero-headshot-final.webp'
 import cyberneticaLogo from '../assets/cybernetica-logo.jpg'
 import piletileviLogo from '../assets/piletilevi-logo.jpg'
 import ericssonLogo from '../assets/ericsson-logo.png'
@@ -38,6 +39,23 @@ function HomeComplete() {
   const [leadMagnetLoading, setLeadMagnetLoading] = useState(false)
   const [leadMagnetError, setLeadMagnetError] = useState(null)
   const [leadMagnetErrors, setLeadMagnetErrors] = useState({})
+  
+  // Check for reduced motion preference - initialize with actual value to avoid flash
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    }
+    return false
+  })
+  
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    
+    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches)
+    mediaQuery.addEventListener('change', handleChange)
+    
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
 
   const encode = (data) => {
     return Object.keys(data)
@@ -167,19 +185,14 @@ function HomeComplete() {
     }
   }
 
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
-  }
+  // Animation variants that respect reduced motion preference
+  const fadeInUp = prefersReducedMotion 
+    ? { initial: { opacity: 1 }, animate: { opacity: 1 }, transition: { duration: 0 } }
+    : { initial: { opacity: 0, y: 60 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6 } }
 
-  const staggerChildren = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
+  const staggerChildren = prefersReducedMotion
+    ? { animate: { transition: { staggerChildren: 0 } } }
+    : { animate: { transition: { staggerChildren: 0.1 } } }
 
   const testimonials = [
     {
@@ -281,11 +294,16 @@ function HomeComplete() {
             transition={{ duration: 0.8 }}
           >
             <div className="relative">
-              <img 
-                src={headshot} 
-                alt="Martin Tamm - AI & Data Analysis Consultant" 
-                className="w-full h-auto object-contain"
-              />
+              <picture>
+                <source srcSet={headshotWebP} type="image/webp" />
+                <img 
+                  src={headshot} 
+                  alt="Martin Tamm - AI & Data Analysis Consultant" 
+                  className="w-full h-auto object-contain"
+                  loading="eager"
+                  fetchPriority="high"
+                />
+              </picture>
             </div>
             <motion.div 
               className="absolute -top-6 -right-6 bg-[#6366F1] p-4 rounded-xl shadow-lg"
