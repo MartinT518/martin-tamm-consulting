@@ -4,9 +4,9 @@ import { Card, CardContent } from '@/components/ui/card.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { Textarea } from '@/components/ui/textarea.jsx'
 import { Checkbox } from '@/components/ui/checkbox.jsx'
-import { ArrowRight, TrendingUp, Target, Zap, BarChart3, Brain, Users, Quote, Download, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
+import { ArrowRight, TrendingUp, Target, Zap, BarChart3, Brain, Users, Download, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import SEO from '../components/SEO'
 
 // Import assets
@@ -20,6 +20,8 @@ import finestmediaLogo from '../assets/finestmedia-logo.png'
 import runningData from '../assets/running-data.webp'
 
 function HomeComplete() {
+  const location = useLocation()
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -47,6 +49,16 @@ function HomeComplete() {
     }
     return false
   })
+  
+  // Handle scroll-to-section from navigation
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      // Small delay to ensure page is rendered
+      setTimeout(() => {
+        document.getElementById(location.state.scrollTo)?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    }
+  }, [location])
   
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -194,29 +206,7 @@ function HomeComplete() {
     ? { animate: { transition: { staggerChildren: 0 } } }
     : { animate: { transition: { staggerChildren: 0.1 } } }
 
-  const testimonials = [
-    {
-      name: "Anna Kask",
-      title: "Project Manager",
-      company: "Cybernetica",
-      quote: "Martin's expertise in AI and data analysis transformed our customs clearance system. His ability to translate complex technical solutions into business value is exceptional.",
-      initials: "AK"
-    },
-    {
-      name: "Jaan Tamm",
-      title: "CTO",
-      company: "Piletilevi Group",
-      quote: "Working with Martin on our pricing optimization project resulted in significant revenue growth. His data-driven approach and business acumen are truly impressive.",
-      initials: "JT"
-    },
-    {
-      name: "Maria Saar",
-      title: "Operations Director",
-      company: "Ericsson",
-      quote: "Martin's real-time monitoring dashboard has been instrumental in achieving our uptime goals. He combines technical excellence with a deep understanding of business needs.",
-      initials: "MS"
-    }
-  ]
+  // Testimonials removed - will be added when real testimonials are available
 
   return (
     <>
@@ -275,14 +265,13 @@ function HomeComplete() {
               </Button>
             </motion.div>
 
-            <motion.div variants={fadeInUp} className="flex items-center gap-8 pt-4">
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#6366F1] to-[#34D399] border-2 border-[#0A192F]"></div>
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#34D399] to-[#6366F1] border-2 border-[#0A192F]"></div>
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#6366F1] to-[#34D399] border-2 border-[#0A192F]"></div>
-                </div>
-                <span className="text-sm text-gray-400">Trusted by Fortune 500 companies</span>
+            <motion.div variants={fadeInUp} className="pt-4">
+              <p className="text-sm text-gray-400 mb-4 uppercase tracking-wide">Proven Experience At Industry-Leading Companies</p>
+              <div className="flex items-center gap-6 flex-wrap">
+                <img src={cyberneticaLogo} alt="Cybernetica" className="h-8 w-auto opacity-70 hover:opacity-100 transition-opacity" />
+                <img src={ericssonLogo} alt="Ericsson" className="h-8 w-auto opacity-70 hover:opacity-100 transition-opacity" />
+                <img src={piletileviLogo} alt="Piletilevi Group" className="h-8 w-auto opacity-70 hover:opacity-100 transition-opacity" />
+                <img src={icefireLogo} alt="Icefire" className="h-8 w-auto opacity-70 hover:opacity-100 transition-opacity" />
               </div>
             </motion.div>
           </motion.div>
@@ -513,55 +502,7 @@ function HomeComplete() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#111827]">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-5xl font-bold mb-6">
-              What My <span className="text-[#6366F1]">Colleagues Say</span>
-            </h2>
-            <p className="text-xl text-gray-400">
-              Don't just take my word for it—here's what people I've worked with have to say.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-          >
-            {testimonials.map((testimonial, index) => (
-              <motion.div key={index} variants={fadeInUp}>
-                <Card className="bg-[#0A192F] border-2 border-gray-800 hover:border-[#6366F1] transition-all duration-300 h-full">
-                  <CardContent className="p-8 space-y-4">
-                    <Quote className="w-10 h-10 text-[#6366F1] opacity-50" />
-                    <p className="text-gray-300 leading-relaxed italic">
-                      "{testimonial.quote}"
-                    </p>
-                    <div className="flex items-center gap-4 pt-4 border-t border-gray-800">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#6366F1] to-[#34D399] flex items-center justify-center font-bold text-white">
-                        {testimonial.initials}
-                      </div>
-                      <div>
-                        <p className="font-semibold text-white">{testimonial.name}</p>
-                        <p className="text-sm text-gray-400">{testimonial.title}</p>
-                        <p className="text-sm text-[#6366F1]">{testimonial.company}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {/* Testimonials Section - Removed until real testimonials are available */}
 
       {/* Lead Magnet Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0A192F]">

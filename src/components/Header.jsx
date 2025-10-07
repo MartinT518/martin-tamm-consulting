@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button.jsx'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -8,6 +8,7 @@ function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,12 +19,14 @@ function Header() {
   }, [])
 
   const scrollToContact = () => {
+    setIsMobileMenuOpen(false)
     if (location.pathname !== '/') {
-      window.location.href = '/#contact'
+      // Navigate to home with state to trigger scroll
+      navigate('/', { state: { scrollTo: 'contact' } })
     } else {
+      // Already on home, just scroll
       document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
     }
-    setIsMobileMenuOpen(false)
   }
 
   const navLinks = [
