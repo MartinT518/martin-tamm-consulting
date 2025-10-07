@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion';
 import { Briefcase, GraduationCap, Award, TrendingUp, Mail, Phone, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 
 export default function About() {
   // Placeholder data - replace with real information
@@ -51,8 +49,6 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0A192F] to-[#111827]">
-      <Header />
-      
       <div className="max-w-6xl mx-auto px-6 pt-32 pb-20">
         {/* Hero Section */}
         <motion.div
@@ -274,8 +270,6 @@ export default function About() {
           </Link>
         </motion.div>
       </div>
-
-      <Footer />
     </div>
   );
 }

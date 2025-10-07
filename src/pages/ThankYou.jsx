@@ -2,8 +2,6 @@ import { motion } from 'framer-motion';
 import { CheckCircle, Download, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 
 export default function ThankYou() {
   // Auto-download PDF on page load
@@ -22,8 +20,6 @@ export default function ThankYou() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0A192F] to-[#111827]">
-      <Header />
-      
       <div className="max-w-4xl mx-auto px-6 pt-32 pb-20">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -122,8 +118,6 @@ export default function ThankYou() {
           </div>
         </motion.div>
       </div>
-
-      <Footer />
     </div>
   );
 }

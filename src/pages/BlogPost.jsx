@@ -2,8 +2,6 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Clock, Calendar, User, Share2, Linkedin, Twitter } from 'lucide-react';
 import { getPostBySlug, getRelatedPosts } from '../data/blogPosts';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 
 export default function BlogPost() {
@@ -101,10 +99,8 @@ export default function BlogPost() {
         ogType="article"
       />
       <div className="min-h-screen bg-gradient-to-b from-[#0A192F] to-[#111827]">
-        <Header />
-      
-      {/* Back Button */}
-      <div className="max-w-4xl mx-auto px-6 pt-32 pb-8">
+        {/* Back Button */}
+        <div className="max-w-4xl mx-auto px-6 pt-32 pb-8">
         <Link 
           to="/insights"
           className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
@@ -255,8 +251,6 @@ export default function BlogPost() {
           </Link>
         </motion.div>
       </article>
-
-        <Footer />
       </div>
     </>
   );
