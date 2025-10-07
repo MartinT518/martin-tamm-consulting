@@ -111,12 +111,16 @@ npm run preview
 - **Phone**: +372 56808182
 
 ## Recent Changes
-- **October 7, 2025**: Configured for Replit environment
-  - Updated vite.config.js with proper host and port settings
+- **October 7, 2025**: Configured for Replit environment & Fixed Critical Issues
+  - Updated vite.config.js with proper host and port settings (allowedHosts: true, HMR on port 443)
   - Set up workflow for development server
   - Configured deployment for autoscale
   - Added dist to .gitignore
   - Installed dependencies with legacy peer deps (date-fns version conflict resolved)
+  - **Fixed Forms**: Integrated Netlify Forms for contact and lead magnet forms
+  - **Form Validation**: Added inline validation with proper error messages (removed alert popups)
+  - **Form States**: Added loading and success states with visual feedback
+  - **Email Capture**: Both forms now properly capture and submit data to Netlify
 
 ## Notes
 - The project uses pnpm as package manager in the original setup, but npm works fine with --legacy-peer-deps flag

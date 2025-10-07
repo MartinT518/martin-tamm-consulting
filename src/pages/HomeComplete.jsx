@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card.jsx'
 import { Input } from '@/components/ui/input.jsx'
 import { Textarea } from '@/components/ui/textarea.jsx'
 import { Checkbox } from '@/components/ui/checkbox.jsx'
-import { ArrowRight, TrendingUp, Target, Zap, BarChart3, Brain, Users, Quote, Download, CheckCircle2 } from 'lucide-react'
+import { ArrowRight, TrendingUp, Target, Zap, BarChart3, Brain, Users, Quote, Download, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
@@ -30,33 +30,141 @@ function HomeComplete() {
   const [leadMagnetConsent, setLeadMagnetConsent] = useState(false)
   const [showLeadMagnetSuccess, setShowLeadMagnetSuccess] = useState(false)
   const [formSubmitted, setFormSubmitted] = useState(false)
+  
+  const [contactFormLoading, setContactFormLoading] = useState(false)
+  const [contactFormError, setContactFormError] = useState(null)
+  const [contactFormErrors, setContactFormErrors] = useState({})
+  
+  const [leadMagnetLoading, setLeadMagnetLoading] = useState(false)
+  const [leadMagnetError, setLeadMagnetError] = useState(null)
+  const [leadMagnetErrors, setLeadMagnetErrors] = useState({})
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!formData.consent) {
-      alert('Please consent to data processing to submit the form.')
-      return
-    }
-    // Form will be handled by Netlify Forms in production
-    console.log('Form submitted:', formData)
-    setFormSubmitted(true)
-    setTimeout(() => {
-      setFormData({ name: '', email: '', message: '', consent: false })
-      setFormSubmitted(false)
-    }, 5000)
+  const encode = (data) => {
+    return Object.keys(data)
+      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&")
   }
 
-  const handleLeadMagnetSubmit = (e) => {
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return re.test(email)
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!leadMagnetConsent) {
-      alert('Please consent to receive the checklist.')
+    setContactFormErrors({})
+    setContactFormError(null)
+
+    const errors = {}
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required'
+    }
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required'
+    } else if (!validateEmail(formData.email)) {
+      errors.email = 'Please enter a valid email address'
+    }
+    if (!formData.message.trim()) {
+      errors.message = 'Message is required'
+    }
+    if (!formData.consent) {
+      errors.consent = 'You must consent to data processing to submit this form'
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setContactFormErrors(errors)
       return
     }
-    // This will be integrated with email marketing service
-    console.log('Lead magnet requested:', leadMagnetEmail)
-    
-    // Redirect to thank you page
-    window.location.href = '/thank-you'
+
+    setContactFormLoading(true)
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({ 
+          "form-name": "contact",
+          ...formData,
+          consent: formData.consent ? "yes" : "no"
+        })
+      })
+
+      if (response.ok) {
+        setFormSubmitted(true)
+        setTimeout(() => {
+          setFormData({ name: '', email: '', message: '', consent: false })
+          setFormSubmitted(false)
+        }, 8000)
+      } else {
+        throw new Error('Form submission failed')
+      }
+    } catch (error) {
+      console.error('Form submission error:', error)
+      setContactFormError('There was an error submitting the form. Please try again or email me directly.')
+    } finally {
+      setContactFormLoading(false)
+    }
+  }
+
+  const handleLeadMagnetSubmit = async (e) => {
+    e.preventDefault()
+    setLeadMagnetErrors({})
+    setLeadMagnetError(null)
+
+    const errors = {}
+    if (!leadMagnetEmail.trim()) {
+      errors.email = 'Email is required'
+    } else if (!validateEmail(leadMagnetEmail)) {
+      errors.email = 'Please enter a valid email address'
+    }
+    if (!leadMagnetConsent) {
+      errors.consent = 'You must consent to receive the checklist'
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setLeadMagnetErrors(errors)
+      return
+    }
+
+    setLeadMagnetLoading(true)
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({ 
+          "form-name": "lead-magnet",
+          email: leadMagnetEmail,
+          consent: leadMagnetConsent ? "yes" : "no"
+        })
+      })
+
+      if (response.ok) {
+        setShowLeadMagnetSuccess(true)
+        setLeadMagnetEmail('')
+        setLeadMagnetConsent(false)
+        
+        setTimeout(() => {
+          const link = document.createElement('a')
+          link.href = '/downloads/ai-ready-checklist.pdf'
+          link.download = 'ai-ready-checklist.pdf'
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+        }, 500)
+
+        setTimeout(() => {
+          setShowLeadMagnetSuccess(false)
+        }, 8000)
+      } else {
+        throw new Error('Form submission failed')
+      }
+    } catch (error) {
+      console.error('Lead magnet submission error:', error)
+      setLeadMagnetError('There was an error processing your request. Please try again.')
+    } finally {
+      setLeadMagnetLoading(false)
+    }
   }
 
   const fadeInUp = {
@@ -73,7 +181,6 @@ function HomeComplete() {
     }
   }
 
-  // Testimonials data
   const testimonials = [
     {
       name: "Anna Kask",
@@ -108,14 +215,12 @@ function HomeComplete() {
       <div className="min-h-screen bg-[#0A192F] text-white">
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden pt-20">
-        {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#6366F1] opacity-10 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#34D399] opacity-10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-          {/* Left side - Text content */}
           <motion.div 
             className="space-y-8"
             initial="initial"
@@ -169,7 +274,6 @@ function HomeComplete() {
             </motion.div>
           </motion.div>
 
-          {/* Right side - Professional headshot */}
           <motion.div 
             className="relative"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -183,7 +287,6 @@ function HomeComplete() {
                 className="w-full h-auto object-contain"
               />
             </div>
-            {/* Floating elements */}
             <motion.div 
               className="absolute -top-6 -right-6 bg-[#6366F1] p-4 rounded-xl shadow-lg"
               animate={{ y: [0, -10, 0] }}
@@ -277,7 +380,6 @@ function HomeComplete() {
 
       {/* Credibility Section */}
       <section id="credibility" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0A192F]">
-        {/* Logo Bar */}
         <motion.div 
           className="bg-white py-12 mb-24"
           initial={{ opacity: 0 }}
@@ -315,7 +417,6 @@ function HomeComplete() {
           </div>
         </motion.div>
 
-        {/* Value Proposition & Case Studies */}
         <div className="max-w-7xl mx-auto">
           <motion.div 
             className="text-center mb-16"
@@ -336,7 +437,6 @@ function HomeComplete() {
             </p>
           </motion.div>
 
-          {/* Case Studies */}
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
             initial="initial"
@@ -476,9 +576,9 @@ function HomeComplete() {
                     <CheckCircle2 className="w-16 h-16 text-[#34D399] mx-auto mb-4" />
                     <h3 className="text-2xl font-bold text-[#34D399] mb-2">Success!</h3>
                     <p className="text-gray-300">
-                      Check your email for the AI-Ready Checklist. 
+                      Your download should start automatically. Check your email for the AI-Ready Checklist as well!
                       <br />
-                      (If you don't see it, check your spam folder)
+                      <span className="text-sm">(If you don't see it, check your spam folder)</span>
                     </p>
                   </motion.div>
                 ) : (
@@ -493,22 +593,43 @@ function HomeComplete() {
                     <input type="hidden" name="form-name" value="lead-magnet" />
                     <input type="hidden" name="bot-field" />
                     
-                    <Input
-                      type="email"
-                      name="email"
-                      placeholder="your.email@company.com"
-                      value={leadMagnetEmail}
-                      onChange={(e) => setLeadMagnetEmail(e.target.value)}
-                      required
-                      className="bg-[#0A192F] border-gray-700 focus:border-[#6366F1] text-white placeholder:text-gray-500 h-14 text-lg"
-                    />
+                    <div className="text-left">
+                      <Input
+                        type="email"
+                        name="email"
+                        placeholder="your.email@company.com"
+                        value={leadMagnetEmail}
+                        onChange={(e) => {
+                          setLeadMagnetEmail(e.target.value)
+                          if (leadMagnetErrors.email) {
+                            setLeadMagnetErrors({ ...leadMagnetErrors, email: null })
+                          }
+                        }}
+                        required
+                        className={`bg-[#0A192F] border-gray-700 focus:border-[#6366F1] text-white placeholder:text-gray-500 h-14 text-lg ${leadMagnetErrors.email ? 'border-red-500' : ''}`}
+                        disabled={leadMagnetLoading}
+                      />
+                      {leadMagnetErrors.email && (
+                        <div className="flex items-center gap-2 mt-2 text-red-500 text-sm">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>{leadMagnetErrors.email}</span>
+                        </div>
+                      )}
+                    </div>
                     
                     <div className="flex items-start gap-3 text-left">
                       <Checkbox
                         id="leadConsent"
+                        name="consent"
                         checked={leadMagnetConsent}
-                        onCheckedChange={setLeadMagnetConsent}
-                        className="mt-1"
+                        onCheckedChange={(checked) => {
+                          setLeadMagnetConsent(checked)
+                          if (leadMagnetErrors.consent) {
+                            setLeadMagnetErrors({ ...leadMagnetErrors, consent: null })
+                          }
+                        }}
+                        className={`mt-1 ${leadMagnetErrors.consent ? 'border-red-500' : ''}`}
+                        disabled={leadMagnetLoading}
                       />
                       <label htmlFor="leadConsent" className="text-sm text-gray-400 cursor-pointer">
                         I consent to receiving the checklist and occasional insights about AI and data analysis. 
@@ -518,14 +639,37 @@ function HomeComplete() {
                         </Link>.
                       </label>
                     </div>
+                    {leadMagnetErrors.consent && (
+                      <div className="flex items-center gap-2 text-red-500 text-sm">
+                        <AlertCircle className="w-4 h-4" />
+                        <span>{leadMagnetErrors.consent}</span>
+                      </div>
+                    )}
+
+                    {leadMagnetError && (
+                      <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                        <p className="text-red-500 text-sm">{leadMagnetError}</p>
+                      </div>
+                    )}
 
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full bg-[#6366F1] hover:bg-[#5558E3] text-white text-lg py-6 rounded-lg shadow-lg shadow-[#6366F1]/30 transition-all duration-300 hover:scale-105 group"
+                      disabled={leadMagnetLoading}
+                      className="w-full bg-[#6366F1] hover:bg-[#5558E3] text-white text-lg py-6 rounded-lg shadow-lg shadow-[#6366F1]/30 transition-all duration-300 hover:scale-105 group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
-                      Download Now
-                      <Download className="ml-2 group-hover:translate-y-1 transition-transform" />
+                      {leadMagnetLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          Download Now
+                          <Download className="ml-2 group-hover:translate-y-1 transition-transform" />
+                        </>
+                      )}
                     </Button>
                   </form>
                 )}
@@ -634,7 +778,6 @@ function HomeComplete() {
               3-5 high-impact opportunities to drive revenue and efficiency.
             </p>
 
-            {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -677,10 +820,22 @@ function HomeComplete() {
                           type="text"
                           placeholder="Your full name"
                           value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, name: e.target.value })
+                            if (contactFormErrors.name) {
+                              setContactFormErrors({ ...contactFormErrors, name: null })
+                            }
+                          }}
                           required
-                          className="bg-[#0A192F] border-gray-700 focus:border-[#6366F1] text-white placeholder:text-gray-500 h-12"
+                          className={`bg-[#0A192F] border-gray-700 focus:border-[#6366F1] text-white placeholder:text-gray-500 h-12 ${contactFormErrors.name ? 'border-red-500' : ''}`}
+                          disabled={contactFormLoading}
                         />
+                        {contactFormErrors.name && (
+                          <div className="flex items-center gap-2 mt-2 text-red-500 text-sm">
+                            <AlertCircle className="w-4 h-4" />
+                            <span>{contactFormErrors.name}</span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="text-left">
@@ -693,10 +848,22 @@ function HomeComplete() {
                           type="email"
                           placeholder="your.email@company.com"
                           value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, email: e.target.value })
+                            if (contactFormErrors.email) {
+                              setContactFormErrors({ ...contactFormErrors, email: null })
+                            }
+                          }}
                           required
-                          className="bg-[#0A192F] border-gray-700 focus:border-[#6366F1] text-white placeholder:text-gray-500 h-12"
+                          className={`bg-[#0A192F] border-gray-700 focus:border-[#6366F1] text-white placeholder:text-gray-500 h-12 ${contactFormErrors.email ? 'border-red-500' : ''}`}
+                          disabled={contactFormLoading}
                         />
+                        {contactFormErrors.email && (
+                          <div className="flex items-center gap-2 mt-2 text-red-500 text-sm">
+                            <AlertCircle className="w-4 h-4" />
+                            <span>{contactFormErrors.email}</span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="text-left">
@@ -708,11 +875,23 @@ function HomeComplete() {
                           name="message"
                           placeholder="Tell me about your biggest data challenge..."
                           value={formData.message}
-                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, message: e.target.value })
+                            if (contactFormErrors.message) {
+                              setContactFormErrors({ ...contactFormErrors, message: null })
+                            }
+                          }}
                           required
                           rows={5}
-                          className="bg-[#0A192F] border-gray-700 focus:border-[#6366F1] text-white placeholder:text-gray-500 resize-none"
+                          className={`bg-[#0A192F] border-gray-700 focus:border-[#6366F1] text-white placeholder:text-gray-500 resize-none ${contactFormErrors.message ? 'border-red-500' : ''}`}
+                          disabled={contactFormLoading}
                         />
+                        {contactFormErrors.message && (
+                          <div className="flex items-center gap-2 mt-2 text-red-500 text-sm">
+                            <AlertCircle className="w-4 h-4" />
+                            <span>{contactFormErrors.message}</span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="flex items-start gap-3 text-left">
@@ -720,9 +899,15 @@ function HomeComplete() {
                           id="consent"
                           name="consent"
                           checked={formData.consent}
-                          onCheckedChange={(checked) => setFormData({ ...formData, consent: checked })}
-                          className="mt-1"
+                          onCheckedChange={(checked) => {
+                            setFormData({ ...formData, consent: checked })
+                            if (contactFormErrors.consent) {
+                              setContactFormErrors({ ...contactFormErrors, consent: null })
+                            }
+                          }}
+                          className={`mt-1 ${contactFormErrors.consent ? 'border-red-500' : ''}`}
                           required
+                          disabled={contactFormLoading}
                         />
                         <label htmlFor="consent" className="text-sm text-gray-400 cursor-pointer">
                           I consent to the processing of my personal data for the purpose of responding to my inquiry. 
@@ -732,14 +917,37 @@ function HomeComplete() {
                           </Link>.
                         </label>
                       </div>
+                      {contactFormErrors.consent && (
+                        <div className="flex items-center gap-2 text-red-500 text-sm">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>{contactFormErrors.consent}</span>
+                        </div>
+                      )}
+
+                      {contactFormError && (
+                        <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 flex items-start gap-3">
+                          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                          <p className="text-red-500 text-sm">{contactFormError}</p>
+                        </div>
+                      )}
 
                       <Button 
                         type="submit"
                         size="lg"
-                        className="w-full bg-gradient-to-r from-[#6366F1] to-[#34D399] hover:from-[#5558E3] hover:to-[#2BC08A] text-white text-lg py-6 rounded-lg shadow-lg shadow-[#6366F1]/30 transition-all duration-300 hover:scale-105 group"
+                        disabled={contactFormLoading}
+                        className="w-full bg-gradient-to-r from-[#6366F1] to-[#34D399] hover:from-[#5558E3] hover:to-[#2BC08A] text-white text-lg py-6 rounded-lg shadow-lg shadow-[#6366F1]/30 transition-all duration-300 hover:scale-105 group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                       >
-                        Schedule Your Free Audit
-                        <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                        {contactFormLoading ? (
+                          <>
+                            <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            Schedule Your Free Audit
+                            <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
                       </Button>
                     </form>
                   )}
@@ -762,4 +970,5 @@ function HomeComplete() {
     </>
   )
 }
+
 export default HomeComplete

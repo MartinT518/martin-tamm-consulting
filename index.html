@@ -9,5 +9,18 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Hidden forms for Netlify Forms detection -->
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="message"></textarea>
+      <input type="checkbox" name="consent" />
+    </form>
+    
+    <form name="lead-magnet" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+      <input type="checkbox" name="consent" />
+    </form>
   </body>
 </html>
