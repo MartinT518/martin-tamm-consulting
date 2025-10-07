@@ -75,6 +75,18 @@ function HomeComplete() {
       .join("&")
   }
 
+  // Helper function for accessible scroll and focus management
+  const handleScrollAndFocus = (targetId) => {
+    const element = document.getElementById(targetId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+      // Small delay to ensure scroll completes before focusing
+      setTimeout(() => {
+        element.focus({ preventScroll: true })
+      }, 500)
+    }
+  }
+
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return re.test(email)
@@ -250,7 +262,7 @@ function HomeComplete() {
               <Button 
                 size="lg" 
                 className="bg-[#6366F1] hover:bg-[#5558E3] text-white text-lg px-8 py-6 rounded-lg shadow-lg shadow-[#6366F1]/50 transition-all duration-300 hover:scale-105 group"
-                onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => handleScrollAndFocus('contact')}
               >
                 Book a Free AI Opportunity Audit
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -261,7 +273,7 @@ function HomeComplete() {
                 className="border-2 border-[#34D399] text-[#34D399] hover:bg-[#34D399] hover:text-[#0A192F] text-lg px-8 py-6 rounded-lg transition-all duration-300"
                 onClick={() => document.getElementById('credibility').scrollIntoView({ behavior: 'smooth' })}
               >
-                See My Work
+                View My Experience
               </Button>
             </motion.div>
 
@@ -386,7 +398,7 @@ function HomeComplete() {
       </section>
 
       {/* Credibility Section */}
-      <section id="credibility" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0A192F]">
+      <section id="credibility" tabIndex="-1" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0A192F]">
         <motion.div 
           className="bg-white py-12 mb-24"
           initial={{ opacity: 0 }}
@@ -679,6 +691,13 @@ function HomeComplete() {
                   <span className="text-gray-400">Data Enthusiast</span>
                 </div>
               </div>
+              <div className="mt-8">
+                <Button asChild size="lg" className="bg-[#6366F1] hover:bg-[#5558E3] text-white">
+                  <Link to="/about">
+                    Read My Full Story <ArrowRight className="ml-2" />
+                  </Link>
+                </Button>
+              </div>
             </motion.div>
 
             <motion.div
@@ -717,7 +736,7 @@ function HomeComplete() {
       </section>
 
       {/* Final CTA / Contact Section */}
-      <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0A192F]">
+      <section id="contact" tabIndex="-1" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0A192F]">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

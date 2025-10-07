@@ -31,7 +31,20 @@ function Insights() {
         </motion.div>
 
         {/* Blog Posts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {blogPosts.length === 0 ? (
+          <div className="text-center py-24">
+            <div className="text-6xl mb-6">📝</div>
+            <h2 className="text-3xl font-bold mb-4">No Insights Posted Yet</h2>
+            <p className="text-xl text-gray-400 mb-8">Check back soon for practical insights on AI and data analysis!</p>
+            <Link 
+              to="/#contact"
+              className="inline-block bg-[#6366F1] hover:bg-[#5558E3] text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            >
+              Get in Touch
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogPosts.map((post, index) => (
             <Link
               key={post.id}
@@ -87,6 +100,7 @@ function Insights() {
             </Link>
           ))}
         </div>
+        )}
 
         {/* Coming Soon Notice */}
         <motion.div

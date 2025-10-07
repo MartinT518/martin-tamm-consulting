@@ -9,9 +9,34 @@ export default function BlogPost() {
   const post = getPostBySlug(slug);
   const relatedPosts = post ? getRelatedPosts(slug) : [];
 
-  // If post not found, redirect to insights page
+  // If post not found, show not found page
   if (!post) {
-    return <Navigate to="/insights" replace />;
+    return (
+      <div className="min-h-screen bg-[#0A192F] text-white flex items-center justify-center px-4">
+        <div className="text-center max-w-2xl">
+          <div className="text-8xl mb-6">📄</div>
+          <h1 className="text-5xl font-bold mb-4">Article Not Found</h1>
+          <p className="text-xl text-gray-400 mb-8">
+            The article you're looking for doesn't exist or has been moved.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Link 
+              to="/insights"
+              className="inline-block bg-[#6366F1] hover:bg-[#5558E3] text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            >
+              <ArrowLeft className="inline w-4 h-4 mr-2" />
+              Back to Insights
+            </Link>
+            <Link 
+              to="/"
+              className="inline-block border-2 border-[#34D399] text-[#34D399] hover:bg-[#34D399] hover:text-[#0A192F] px-8 py-3 rounded-lg font-semibold transition-colors"
+            >
+              Go Home
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // Parse markdown-style content to JSX
