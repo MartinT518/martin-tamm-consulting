@@ -255,7 +255,7 @@ function HomeComplete() {
             </motion.div>
             
             <motion.p variants={fadeInUp} className="text-xl text-gray-300 leading-relaxed">
-              Stop making decisions in the dark. I help C-level executives and business leaders unlock hidden opportunities in their data, automate inefficient processes, and outpace competitors with AI-driven insights.
+              With 9 years of experience bridging business and technology across e-commerce, banking, smart manufacturing, and public sector projects, I transform complex business requirements into effective technical solutions that drive measurable results.
             </motion.p>
             
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
@@ -465,23 +465,23 @@ function HomeComplete() {
           >
             {[
               {
-                title: "Streamlined Customs Processes",
-                result: "40% Reduction in Processing Time",
-                description: "Implemented AI-powered automation for Cybernetica's customs clearance system, reducing manual work and improving accuracy.",
+                title: "Centralized Clearance for Import",
+                result: "Streamlined Import Processes",
+                description: "Leading business/system analyst for Cybernetica's CCI project, analyzing requirements, developing system specifications, and conducting data analysis to optimize customs clearance processes.",
                 icon: Zap,
                 color: "#6366F1"
               },
               {
-                title: "Revenue Optimization",
-                result: "€2M+ Additional Annual Revenue",
-                description: "Developed predictive analytics model for Piletilevi Group to optimize pricing strategy and inventory management.",
+                title: "Business Intelligence & Analytics",
+                result: "Data-Driven Decision Making",
+                description: "Power BI data analysis for Piletilevi Group including reporting requirement analysis, DAX rules, data transformation, and SQL query optimization for actionable business insights.",
                 icon: TrendingUp,
                 color: "#34D399"
               },
               {
-                title: "Network Performance Analytics",
-                result: "99.9% Uptime Achievement",
-                description: "Built real-time monitoring dashboard for Ericsson to predict and prevent network failures before they occur.",
+                title: "Manufacturing Excellence System",
+                result: "Global MES Support & Implementation",
+                description: "Led MES application support team at Ericsson, providing global support for 18 applications, data analysis, BI production, and implementing Jaipur factory production management system.",
                 icon: BarChart3,
                 color: "#6366F1"
               }

@@ -3,48 +3,114 @@ import { Briefcase, GraduationCap, Award, TrendingUp, Mail, Phone, Linkedin } fr
 import { Link } from 'react-router-dom';
 
 export default function About() {
-  // Placeholder data - replace with real information
   const experience = [
     {
-      year: '2020 - Present',
-      title: 'Senior AI & Data Analysis Consultant',
-      company: 'Independent',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Helping businesses transform data into actionable insights and competitive advantages.'
+      year: 'May 2023 - Present',
+      title: 'Senior Analyst',
+      company: 'Cybernetica',
+      location: 'Tartumaa, Estonia',
+      description: 'Leading Business/System Analyst role within the Centralized Clearance for Import (CCI) project. Analyzing and refining business requirements, developing comprehensive system specifications, conducting in-depth data analysis to support informed decision-making, and leading testing and implementation efforts to ensure seamless integration of new functionalities.'
     },
     {
-      year: '2018 - 2020',
-      title: 'Data Science Lead',
-      company: '[Company Name]',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Led data science initiatives and built predictive models for business optimization.'
+      year: 'December 2022 - February 2024',
+      title: 'Data Analyst',
+      company: 'Piletilevi Group',
+      location: 'Estonia',
+      description: 'Power BI data analysis including reporting requirement analysis, DAX rules development, data transformation, and SQL query compiling to deliver actionable business insights.'
     },
     {
-      year: '2015 - 2018',
-      title: 'Business Intelligence Analyst',
-      company: '[Company Name]',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Developed dashboards and analytics solutions for executive decision-making.'
+      year: 'May 2021 - May 2023',
+      title: 'Project Business Analyst',
+      company: 'Ridango',
+      location: 'Tallinn, Harjumaa, Estonia',
+      description: 'Analysis of development tasks in cooperation with product managers, developers and testers. Consulting customers and defining their needs into technical analysis documentation. Product improvement analysis and roadmap development for back-office, real-time, customer web, devices, and integrations.'
+    },
+    {
+      year: 'June 2019 - May 2021',
+      title: 'Business System Analyst',
+      company: 'Icefire',
+      location: 'Estonia',
+      description: 'Collected and defined functional requirements, modeled complex business processes, led requirements analysis and verification processes, developed solution architecture with IT architects, and created comprehensive documentation including user stories, use cases, and process diagrams. Key projects included bank business data model, SKAIS2 architecture, and X-road Elering biofuel integration analysis.'
+    },
+    {
+      year: 'February 2018 - June 2020',
+      title: 'Lead IT System Analyst',
+      company: 'Finestmedia AS',
+      location: 'Estonia',
+      description: 'Participated in software development projects as lead analyst, advising development teams in e-commerce field. Responsible for requirements mapping of software solutions including mock-up prototype plans, customer consulting and change management, and analysis process mapping and development planning. Led projects including InRiver, Akeneo, nopCommerce, EpiServer, ERP (NAV, Directo, Axapta) system e-commerce analysis for Java, .NET, and PHP based projects.'
+    },
+    {
+      year: 'October 2016 - February 2018',
+      title: 'IT System Analyst',
+      company: 'Finestmedia AS',
+      location: 'Estonia',
+      description: 'System analysis and requirements documentation for e-commerce solutions and enterprise integrations.'
+    },
+    {
+      year: 'March 2015 - October 2016',
+      title: 'Supply Process & IT Support Agent (MES Team Lead)',
+      company: 'Ericsson',
+      location: 'Estonia',
+      description: 'Global support for 18 MES applications in development, issue investigation, tracking, and implementation. Data analyzing and report preparation for production sites. Business intelligence (BI) production and end user support, trainings and development. Setting up and implementing Jaipur factory production management system and support workflow. MES application support team lead and team builder.'
+    },
+    {
+      year: 'May 2013 - February 2015',
+      title: 'MES Engineer',
+      company: 'Ericsson',
+      location: 'Estonia',
+      description: 'MES system local support including development, data analyzing, report preparations, and trainings.'
     }
   ];
 
   const education = [
     {
-      degree: '[Your Degree]',
-      institution: '[Your University]',
-      year: '[Year]',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+      degree: 'Doctor of Philosophy - PhD, Information Technology',
+      institution: 'Tallinn University of Technology (TalTech)',
+      year: 'January 2025 (Expected)',
+      description: 'Advanced research in information technology and intelligent systems.'
+    },
+    {
+      degree: 'Master\'s Degree, Business IT (Data Analysis & Intelligent Systems)',
+      institution: 'Tallinn University of Technology (TalTech)',
+      year: 'September 2020 - July 2026',
+      description: 'Specialized in data analysis, business intelligence, and intelligent systems for business applications.'
+    },
+    {
+      degree: 'Master\'s Degree, Product Development and Production Technologies',
+      institution: 'Tallinn University of Technology (TalTech)',
+      year: '2014 - 2016',
+      description: 'Focus on manufacturing systems, production optimization, and technology management.'
+    },
+    {
+      degree: 'Bachelor of Applied Science (BASc), Engineering Materials and Marketing',
+      institution: 'Tallinn University of Applied Sciences',
+      year: '2010 - 2014',
+      description: 'Interdisciplinary program combining engineering principles with business and marketing fundamentals.'
     }
   ];
 
   const certifications = [
-    '[Certification 1]',
-    '[Certification 2]',
-    '[Certification 3]'
+    'InRiver Business Consultant Certificate',
+    'English Language B2 Level Certificate'
   ];
 
   const skills = [
-    { category: 'AI & Machine Learning', items: ['Python', 'TensorFlow', 'Scikit-learn', 'XGBoost'] },
-    { category: 'Data Analysis', items: ['SQL', 'Pandas', 'NumPy', 'Statistical Analysis'] },
-    { category: 'Visualization', items: ['Tableau', 'Power BI', 'Matplotlib', 'Plotly'] },
-    { category: 'Business', items: ['Strategy', 'Process Optimization', 'Change Management', 'Stakeholder Communication'] }
+    { 
+      category: 'Business Analysis', 
+      items: ['Requirements Analysis', 'Process Modeling', 'System Specifications', 'Stakeholder Management', 'Agile Methodologies'] 
+    },
+    { 
+      category: 'Data Analysis & BI', 
+      items: ['Power BI', 'DAX', 'SQL', 'Data Transformation', 'Reporting', 'Business Intelligence'] 
+    },
+    { 
+      category: 'Technical Skills', 
+      items: ['PHP', '.NET', 'Java', 'System Architecture', 'Integration Analysis', 'E-commerce Solutions'] 
+    },
+    { 
+      category: 'Leadership & Management', 
+      items: ['Team Leadership', 'Project Management', 'Change Management', 'Customer Consulting', 'Development Facilitation'] 
+    }
   ];
 
   return (
@@ -64,11 +130,11 @@ export default function About() {
             Martin Tamm
           </h1>
           <p className="text-2xl text-gray-300 mb-6">
-            AI & Data Analysis Consultant
+            System & Business Analyst | AI Enthusiast
           </p>
           <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            100% AI enthusiast/NERD, bridging business and technology. Expert in E-Government, E-Commerce, and Banking with 9 years of experience 
+            transforming complex business requirements into effective technical solutions across multiple industries.
           </p>
           
           {/* Contact Buttons */}
@@ -88,7 +154,7 @@ export default function About() {
               +372 56808182
             </a>
             <a
-              href="https://linkedin.com/in/[your-profile]"
+              href="https://www.linkedin.com/in/mtamm"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-all"
@@ -112,16 +178,23 @@ export default function About() {
           </h2>
           <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700">
             <p className="text-gray-300 leading-relaxed mb-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              As a system and business analyst with 9 years of experience, I've had the opportunity to work on a wide range of projects across 
+              industries such as e-commerce, banking, smart manufacturing, smart public transportation, and public sector. My expertise spans 
+              across multiple programming languages including PHP, .NET, and Java.
             </p>
             <p className="text-gray-300 leading-relaxed mb-4">
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              I have a knack for identifying the root cause of system issues and delivering effective solutions that meet business requirements. 
+              In addition to my technical skills, I'm well-versed in agile methodologies and have experience facilitating development standups 
+              and grooming sessions.
+            </p>
+            <p className="text-gray-300 leading-relaxed mb-4">
+              I hold a master's degree in mechanical engineering, and I'm currently pursuing a second master's degree in business information systems 
+              and a PhD in Information Technology. My passion for both the technical and business aspects of systems analysis drives me to continuously 
+              learn and develop my skillset.
             </p>
             <p className="text-gray-300 leading-relaxed">
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, 
-              eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              I take pride in my ability to collaborate with cross-functional teams to deliver projects on time and within budget. If you're looking 
+              for a results-driven system and business analyst, let's connect.
             </p>
           </div>
         </motion.section>
@@ -144,6 +217,7 @@ export default function About() {
                   <div>
                     <h3 className="text-xl font-semibold text-white">{job.title}</h3>
                     <p className="text-blue-400">{job.company}</p>
+                    {job.location && <p className="text-gray-500 text-sm">{job.location}</p>}
                   </div>
                   <span className="text-gray-400 text-sm">{job.year}</span>
                 </div>
@@ -195,6 +269,21 @@ export default function About() {
                     <span>{cert}</span>
                   </li>
                 ))}
+              </ul>
+            </div>
+            
+            {/* Languages Section */}
+            <div className="mt-6 bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+              <h3 className="text-lg font-semibold text-white mb-4">Languages</h3>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 text-gray-300">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
+                  <span>Estonian (Native or Bilingual)</span>
+                </li>
+                <li className="flex items-start gap-3 text-gray-300">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
+                  <span>English (Professional Working Proficiency)</span>
+                </li>
               </ul>
             </div>
           </motion.section>
@@ -273,3 +362,4 @@ export default function About() {
     </div>
   );
 }
+
